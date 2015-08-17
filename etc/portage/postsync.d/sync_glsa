@@ -4,16 +4,11 @@ source /etc/portage/check-portdir.sh
 source /etc/init.d/functions.sh
 source /etc/portage/util-functions.sh
 
-einfo "updating glsa directory"
-
-cd "${PORTDIR}"/metadata || die "could not cd into '${PORTDIR}/metadata'!"
-if [[ -e glsa ]] ; then
-	einfo "glsa dir already exists, updating..."
-	cd glsa || die "could not cd into 'glsa'!"
-	git pull --ff || die "could not pull updates!"
+GLSADIR="${PORTDIR}"/metadata/glsa
+ebegin "Updating GLSAs"
+if [[ -e $GLSADIR ]]; then
+	git -C "$GLSADIR" pull --ff
 else
-	einfo "glsa directory does not exist, cloning..."
-	git clone https://anongit.gentoo.org/git/data/glsa.git || die "could not clone repository!"
+	git clone https://anongit.gentoo.org/git/data/glsa.git "$GLSADIR"
 fi
-
-einfo "done updating glsa directory"
+eend "$?"
