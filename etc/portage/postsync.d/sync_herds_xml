@@ -5,5 +5,5 @@ source /etc/init.d/functions.sh
 source /etc/portage/util-functions.sh
 
 ebegin "Updating herds.xml"
-wget -O "${PORTDIR}"/metadata/herds.xml https://gitweb.gentoo.org/data/api.git/plain/files/packages/herds.xml
+wget -O "${PORTDIR}"/metadata/herds.xml https://api.gentoo.org/packages/herds.xml
 eend $?
