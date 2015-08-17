@@ -4,10 +4,6 @@ source /etc/portage/check-portdir.sh
 source /etc/init.d/functions.sh
 source /etc/portage/util-functions.sh
 
-einfo "updating herds.xml"
-
-cd "${PORTDIR}"/metadata || die "could not cd into '${PORTDIR}/metadata'!"
-[[ -e "${PORTDIR}"/metadata/herds.xml ]] && { rm "${PORTDIR}"/metadata/herds.xml || die "failed to rm herds.xml!" ;}
-wget https://gitweb.gentoo.org/data/api.git/plain/files/packages/herds.xml || die "failed to wget herds.xml"
-
-einfo "done updating herds.xml"
+ebegin "Updating herds.xml"
+wget -O "${PORTDIR}"/metadata/herds.xml https://api.gentoo.org/packages/herds.xml
+eend $?

@@ -4,6 +4,7 @@ source /etc/portage/check-portdir.sh
 source /etc/init.d/functions.sh
 source /etc/portage/util-functions.sh
 
-einfo "syncing metadata cache"
-egencache --jobs=8 --repo=gentoo --update --update-use-local-desc || die "egencache failed!"
-einfo "done syncing metadata cache"
+ebegin "Syncing metadata cache"
+rsync -avP rsync://rsync.gentoo.org/gentoo-portage/metadata/md5-cache/ "${PORTDIR}"/metadata/md5-cache/
+egencache --jobs=$(nproc) --repo=gentoo --update --update-use-local-desc
+eend $?
