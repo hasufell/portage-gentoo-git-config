@@ -17,9 +17,6 @@ ebegin "Cleaning news git repo"
 git -C "$NEWSDIR" clean -fdxq
 eend_die $?
 
-[[ -n "$(find "$NEWSDIR" -mindepth 1 -maxdepth 1 -type d -name "*-*-*")" ]] && \
-	die "It seems the repository format of proj/gentoo-news has changed! Update your script!"
-
 ebegin "Copying news to base directory"
 cp -a "$NEWSDIR"/*/* "$NEWSDIR"
 eend $?
