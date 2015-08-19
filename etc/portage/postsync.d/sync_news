@@ -7,9 +7,9 @@ source /etc/portage/util-functions.sh
 NEWSDIR="${PORTDIR}"/metadata/news
 ebegin "Updating news items"
 if [[ -e ${NEWSDIR} ]]; then
-	git -C "${NEWSDIR}" pull --ff
+	git -C "${NEWSDIR}" pull -q --ff
 else
-	git clone https://anongit.gentoo.org/git/proj/gentoo-news.git "${NEWSDIR}"
+	git clone -q https://anongit.gentoo.org/git/proj/gentoo-news.git "${NEWSDIR}"
 fi
 eend_die $?
 
