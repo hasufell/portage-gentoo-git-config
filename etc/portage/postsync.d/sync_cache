@@ -9,7 +9,7 @@ overlay_list=(
 )
 
 ebegin "Syncing metadata cache for gentoo repository"
-rsync -avPq rsync://rsync.gentoo.org/gentoo-portage/metadata/md5-cache/ "${PORTDIR}"/metadata/md5-cache/
+rsync -aq rsync://rsync.gentoo.org/gentoo-portage/metadata/md5-cache/ "${PORTDIR}"/metadata/md5-cache/
 egencache --jobs=$(nproc) --repo=gentoo --update --update-use-local-desc
 eend $?
 
