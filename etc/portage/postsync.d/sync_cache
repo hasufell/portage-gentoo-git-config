@@ -4,20 +4,22 @@ source /etc/portage/check-portdir.sh
 source /etc/init.d/functions.sh
 source /etc/portage/util-functions.sh
 
-# add your overlays here (name of the overlay!)
-overlay_list=(
-)
+# You may change this to only update cache of specific repositories.
+# Should at least include 'gentoo'. Default is all repositories.
+repository_list=( $(portageq get_repos /) )
 
-ebegin "Syncing metadata cache for gentoo repository"
+# Number of jobs for egencache, default is number or processors.
+egencache_jobnum="$(nproc)"
+
+
+ebegin "Fetching pre-generated metadata cache for gentoo repository"
 rsync -aq rsync://rsync.gentoo.org/gentoo-portage/metadata/md5-cache/ "${PORTDIR}"/metadata/md5-cache/
-egencache --jobs=$(nproc) --repo=gentoo --update --update-use-local-desc
 eend $?
 
-if [[ ${#overlay_list[@]} -gt 0 ]] ; then
-	ebegin "Syncing metadata cache for overlays"
-	for _overlay in ${overlay_list[@]} ; do
-		einfo "  ${_overlay}"
-		egencache --jobs=$(nproc) --repo=${_overlay} --update --update-use-local-desc
-	done
-	eend $?
-fi
+einfo "Updating metadata cache for repositories:"
+for _repo in ${repository_list[@]} ; do
+	einfo "  ${_repo}"
+	egencache --jobs=${egencache_jobnum} --repo=${_repo} --update --update-use-local-desc
+done
+eend $?
+
