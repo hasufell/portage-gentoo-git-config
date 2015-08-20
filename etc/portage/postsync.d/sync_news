@@ -20,3 +20,5 @@ eend_die $?
 ebegin "Copying news to base directory"
 cp -a "${NEWSDIR}"/*/* "${NEWSDIR}"
 eend $?
+
+emerge --check-news
