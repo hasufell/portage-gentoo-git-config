@@ -16,8 +16,9 @@ ebegin "Fetching pre-generated metadata cache for gentoo repository"
 rsync -aq rsync://rsync.gentoo.org/gentoo-portage/metadata/md5-cache/ "${PORTDIR}"/metadata/md5-cache/
 eend $?
 
+einfo "Updating metadata cache for repositories:"
 for repo in "${repository_list[@]}"; do
-	ebegin "Updating metadata cache for ${repo} repository"
+	ebegin "  ${repo}"
 	egencache --jobs="${parallel_jobs}" --repo="${repo}" --update --update-use-local-desc
 	eend $?
 done
