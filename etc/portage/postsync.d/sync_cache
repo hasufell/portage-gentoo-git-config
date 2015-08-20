@@ -9,17 +9,16 @@ source /etc/portage/util-functions.sh
 repository_list=( $(portageq get_repos /) )
 
 # Number of jobs for egencache, default is number or processors.
-egencache_jobnum="$(nproc)"
+parallel_jobs="$(nproc)"
 
 
 ebegin "Fetching pre-generated metadata cache for gentoo repository"
 rsync -aq rsync://rsync.gentoo.org/gentoo-portage/metadata/md5-cache/ "${PORTDIR}"/metadata/md5-cache/
 eend $?
 
-einfo "Updating metadata cache for repositories:"
-for _repo in ${repository_list[@]} ; do
-	einfo "  ${_repo}"
-	egencache --jobs=${egencache_jobnum} --repo=${_repo} --update --update-use-local-desc
+for repo in "${repository_list[@]}"; do
+	ebegin "Updating metadata cache for ${repo} repository"
+	egencache --jobs="${parallel_jobs}" --repo="${repo}" --update --update-use-local-desc
+	eend $?
 done
-eend $?
 
