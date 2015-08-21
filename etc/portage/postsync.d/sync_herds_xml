@@ -1,9 +1,0 @@
-#!/bin/bash
-
-source /etc/portage/check-portdir.sh
-source /etc/init.d/functions.sh
-source /etc/portage/util-functions.sh
-
-ebegin "Updating herds.xml"
-wget -q -O "${PORTDIR}"/metadata/herds.xml https://api.gentoo.org/packages/herds.xml
-eend $?
