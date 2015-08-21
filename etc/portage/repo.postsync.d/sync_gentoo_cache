@@ -3,13 +3,13 @@
 source /etc/init.d/functions.sh
 source /etc/portage/util-functions.sh
 
-repository_name=${1}
-repository_path=${3}
+repository_name="${1}"
+repository_path="${3}"
 
 # Number of jobs for egencache, default is number or processors.
 parallel_jobs="$(nproc)"
 
-if [ "${repository_name}" == "gentoo" ]; then
+if [[ ${repository_name} == "gentoo" ]]; then
 	ebegin "Fetching pre-generated metadata cache for ${repository_name}"
 	rsync -aq rsync://rsync.gentoo.org/gentoo-portage/metadata/md5-cache/ "${repository_path}"/metadata/md5-cache/
 	eend $?
