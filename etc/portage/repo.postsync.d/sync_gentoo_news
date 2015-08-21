@@ -14,5 +14,5 @@ if [[ ${repository_name} == "gentoo" ]]; then
 	else
 		git clone -q https://anongit.gentoo.org/git/data/gentoo-news.git "${NEWSDIR}"
 	fi
-	eend $? "Try to remove ${PORTDIR}/metadata/news"
+	eend $? "Try to remove ${NEWSDIR}"
 fi
