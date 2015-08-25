@@ -1,17 +1,17 @@
 #!/bin/bash
 
+[[ ${repository_name} == "gentoo" ]] || exit 0
+
 source /lib/gentoo/functions.sh
 
 repository_name="${1}"
 repository_path="${3}"
 
-if [[ ${repository_name} == "gentoo" ]]; then
-	GLSADIR="${repository_path}"/metadata/glsa
-	ebegin "Updating GLSAs"
-	if [[ -e ${GLSADIR} ]]; then
-		git -C "${GLSADIR}" pull -q --ff
-	else
-		git clone -q https://anongit.gentoo.org/git/data/glsa.git "${GLSADIR}"
-	fi
-	eend "$?"
+GLSADIR="${repository_path}"/metadata/glsa
+ebegin "Updating GLSAs"
+if [[ -e ${GLSADIR} ]]; then
+	git -C "${GLSADIR}" pull -q --ff
+else
+	git clone -q https://anongit.gentoo.org/git/data/glsa.git "${GLSADIR}"
 fi
+eend "$?"
