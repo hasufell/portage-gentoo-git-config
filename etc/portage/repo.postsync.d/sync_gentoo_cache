@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[[ ${repository_name} == "gentoo" ]] || exit 0
+
 source /lib/gentoo/functions.sh
 
 repository_name="${1}"
@@ -8,12 +10,10 @@ repository_path="${3}"
 # Number of jobs for egencache, default is number or processors.
 parallel_jobs="$(nproc)"
 
-if [[ ${repository_name} == "gentoo" ]]; then
-	ebegin "Fetching pre-generated metadata cache for ${repository_name}"
-	rsync -aq rsync://rsync.gentoo.org/gentoo-portage/metadata/md5-cache/ "${repository_path}"/metadata/md5-cache/
-	eend $?
+ebegin "Fetching pre-generated metadata cache for ${repository_name}"
+rsync -aq rsync://rsync.gentoo.org/gentoo-portage/metadata/md5-cache/ "${repository_path}"/metadata/md5-cache/
+eend $?
 
-	ebegin "Updating metadata cache for ${repository_name}"
-	egencache --jobs="${parallel_jobs}" --repo="${repository_name}" --update --update-use-local-desc
-	eend $?
-fi
+ebegin "Updating metadata cache for ${repository_name}"
+egencache --jobs="${parallel_jobs}" --repo="${repository_name}" --update --update-use-local-desc
+eend $?
