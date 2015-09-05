@@ -1,11 +1,11 @@
 #!/bin/bash
 
+repository_name="${1}"
+repository_path="${3}"
+
 [[ ${repository_name} == "gentoo" ]] || exit 0
 
 source /lib/gentoo/functions.sh
-
-repository_name="${1}"
-repository_path="${3}"
 
 # Number of jobs for egencache, default is number or processors.
 parallel_jobs="$(nproc)"
