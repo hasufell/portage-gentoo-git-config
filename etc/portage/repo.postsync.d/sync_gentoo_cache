@@ -10,9 +10,24 @@ source /lib/gentoo/functions.sh
 # Number of jobs for egencache, default is number or processors.
 parallel_jobs="$(nproc)"
 
-ebegin "Fetching pre-generated metadata cache for ${repository_name}"
-rsync -aq rsync://rsync.gentoo.org/gentoo-portage/metadata/md5-cache/ "${repository_path}"/metadata/md5-cache/
+if [[ -f ${repository_path}/metadata/timestamp.x ]]; then
+	portage_current_timestamp=$(cut -f 1 -d " " "${repository_path}/metadata/timestamp.x" )
+else
+	portage_current_timestamp=0
+fi
+
+ebegin "Fetching metadata timestamp for ${repository_name}"
+rsync -aq rsync://rsync.gentoo.org/gentoo-portage/metadata/timestamp.x "${repository_path}"/metadata/timestamp.x
 eend $?
+portage_new_timestamp=$(cut -f 1 -d " " "${repository_path}/metadata/timestamp.x" )
+
+if [[ ${portage_current_timestamp} -lt ${portage_new_timestamp} ]]; then
+	ebegin "Fetching pre-generated metadata cache for ${repository_name}"
+	rsync -aq rsync://rsync.gentoo.org/gentoo-portage/metadata/md5-cache/ "${repository_path}"/metadata/md5-cache/
+	eend $?
+else
+	einfo "Metadata cache for ${repository_name} already recent, no need to fetch it :-)"
+fi
 
 ebegin "Updating metadata cache for ${repository_name}"
 egencache --jobs="${parallel_jobs}" --repo="${repository_name}" --update --update-use-local-desc
