@@ -8,5 +8,5 @@ repository_path="${3}"
 source /lib/gentoo/functions.sh
 
 ebegin "Updating projects.xml"
-wget -q -O "${repository_path}"/metadata/projects.xml https://api.gentoo.org/metastructure/projects.xml
+wget -q -P "${repository_path}"/metadata/ -N https://api.gentoo.org/metastructure/projects.xml
 eend $?
