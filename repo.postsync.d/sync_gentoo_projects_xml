@@ -1,0 +1,12 @@
+#!/bin/bash
+
+repository_name="${1}"
+repository_path="${3}"
+
+[[ ${repository_name} == "gentoo" ]] || exit 0
+
+source /lib/gentoo/functions.sh
+
+ebegin "Updating herds.xml"
+wget -q -O "${repository_path}"/metadata/projects.xml https://api.gentoo.org/metastructure/projects.xml
+eend $?
